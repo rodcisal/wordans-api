@@ -6,7 +6,7 @@ class CustomProductsController < ApplicationController
   end
 
   def create
-    @new_custom_product = CustomProduct.create(
+    @new_custom_product = CustomProduct.new(
       product_id: params[:product_id],
       right_sleeve: params[:custom_product][:right_sleeve],
       left_sleeve: params[:custom_product][:left_sleeve],
@@ -16,7 +16,11 @@ class CustomProductsController < ApplicationController
       quantity: params[:custom_product][:quantity],
       color: params[:custom_product][:color]
     )
-    render json: @new_custom_product
+    if @new_custom_product.save
+      render json: @new_custom_product
+    else
+      render status: 500, json: {error: 'Invalid Product'}
+    end
   end
 
   private
